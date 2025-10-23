@@ -15,7 +15,7 @@ const listContainer = document.getElementById("groceryList");
 const totalBtn = document.getElementById("totalBtn");
 const totalDisplay = document.getElementById("totalDisplay");
 
-// ====== Function: Render List ======
+//  Function: Render List
 function renderList() {
   // Clear the current list first
   listContainer.innerHTML = "";
@@ -29,6 +29,7 @@ function renderList() {
     listContainer.appendChild(emptyMsg);
     return;
   }
+ 
 
   // Display each grocery item
   groceryList.forEach((item, index) => {
@@ -53,9 +54,12 @@ function renderList() {
     li.appendChild(delBtn);
     listContainer.appendChild(li);
   });
+  if (totalBtn){
+     calculateTotal();
+  }
 }
 
-// ====== Function: Add Item ======
+// Function: Add Item 
 function addItem() {
   const name = itemNameInput.value.trim();
   const priceValue = itemPriceInput.value.trim();
@@ -91,19 +95,19 @@ function addItem() {
   itemNameInput.focus();
 }
 
-// ====== Function: Remove Item ======
+// Function: Remove Item 
 function removeItem(index) {
   groceryList.splice(index, 1);
   renderList();
 }
 
-// ====== Function: Calculate Total ======
+//  Function: Calculate Total
 function calculateTotal() {
   const total = groceryList.reduce((sum, item) => sum + item.price, 0);
   totalDisplay.textContent = `The Total Price of the Item is: $${total.toFixed(2)}`;
 }
 
-// ====== Event Listeners ======
+//  Event Listeners
 addBtn.addEventListener("click", addItem);
 totalBtn.addEventListener("click", calculateTotal);
 
@@ -114,5 +118,5 @@ totalBtn.addEventListener("click", calculateTotal);
   });
 });
 
-// ====== Initial Render ======
+// Initial Render
 renderList();
