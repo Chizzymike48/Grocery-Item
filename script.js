@@ -81,7 +81,7 @@ function addItem() {
     price: Number(priceValue),
   };
 
-  // Add to array
+  
   groceryList.push(newItem);
 
   // Re-render list
