@@ -15,12 +15,10 @@ const listContainer = document.getElementById("groceryList");
 const totalBtn = document.getElementById("totalBtn");
 const totalDisplay = document.getElementById("totalDisplay");
 
-//  Function: Render List
+// ===== Function: Render List =====
 function renderList() {
-  // Clear the current list first
   listContainer.innerHTML = "";
 
-  // If list is empty, show a message
   if (groceryList.length === 0) {
     const emptyMsg = document.createElement("li");
     emptyMsg.textContent = "No items in your grocery list yet.";
@@ -29,42 +27,41 @@ function renderList() {
     listContainer.appendChild(emptyMsg);
     return;
   }
- 
 
-  // Display each grocery item
   groceryList.forEach((item, index) => {
     const li = document.createElement("li");
 
-    // Create text for item name and price
     const text = document.createElement("span");
     text.textContent = `${item.name} = $${item.price.toFixed(2)}`;
 
-    // Create delete button
+    // Delete button
     const delBtn = document.createElement("button");
-    delBtn.textContent = "delete";
+    delBtn.textContent = "🗑️ Delete";
     delBtn.classList.add("delete-btn");
 
-    // When delete button is clicked
+    // Handle delete with confirmation
     delBtn.addEventListener("click", () => {
-      removeItem(index);
+      const confirmDelete = confirm(`Are you sure you want to delete "${item.name}" from your list?`);
+      if (confirmDelete) {
+        removeItem(index);
+      }
     });
 
-    // Append to list item
     li.appendChild(text);
     li.appendChild(delBtn);
     listContainer.appendChild(li);
   });
-  if (totalBtn){
-     calculateTotal();
+
+  if (totalBtn) {
+    calculateTotal();
   }
 }
 
-// Function: Add Item 
+// ===== Function: Add Item =====
 function addItem() {
   const name = itemNameInput.value.trim();
   const priceValue = itemPriceInput.value.trim();
 
-  // Validation
   if (name === "") {
     alert("Please enter an item name.");
     return;
@@ -75,48 +72,40 @@ function addItem() {
     return;
   }
 
-  // Create new item
   const newItem = {
     name: name,
     price: Number(priceValue),
   };
 
-  
   groceryList.push(newItem);
-
-  // Re-render list
   renderList();
 
-  // Clear inputs
   itemNameInput.value = "";
   itemPriceInput.value = "";
-
-  // Focus back on name field
   itemNameInput.focus();
 }
 
-// Function: Remove Item 
+// ===== Function: Remove Item =====
 function removeItem(index) {
   groceryList.splice(index, 1);
   renderList();
 }
 
-//  Function: Calculate Total
+// ===== Function: Calculate Total =====
 function calculateTotal() {
   const total = groceryList.reduce((sum, item) => sum + item.price, 0);
-  totalDisplay.textContent = `The Total Price of the Item is: $${total.toFixed(2)}`;
+  totalDisplay.textContent = `The Total Price of the Items is: $${total.toFixed(2)}`;
 }
 
-//  Event Listeners
+// ===== Event Listeners =====
 addBtn.addEventListener("click", addItem);
 totalBtn.addEventListener("click", calculateTotal);
 
-// Allow pressing Enter key to add item
 [itemNameInput, itemPriceInput].forEach((input) => {
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") addItem();
   });
 });
 
-// Initial Render
+// ===== Initial Render =====
 renderList();
